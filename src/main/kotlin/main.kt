@@ -29,10 +29,14 @@ fun main(args: Array<String>) {
     val diffList = diff(firstFileLines, secondFileLines)
 
     val outputFileName = baseDirectory.resolve("diff.html").toString()
-    println("Report generated in: $outputFileName")
     val reportHtml = createReport(diffList, firstFileName to secondFileName)
 
-    File(outputFileName).printWriter().use { out ->
-        out.println(reportHtml.toHtml())
+    try {
+        File(outputFileName).printWriter().use { out ->
+            out.println(reportHtml.toHtml())
+        }
+        println("Report generated in: $outputFileName")
+    } catch (e: Exception) {
+        println("Can't write to file: $outputFileName")
     }
 }
